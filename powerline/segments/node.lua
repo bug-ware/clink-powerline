@@ -3,7 +3,8 @@ local Util = require("powerline.utils.util")
 
 local Node = {}
 
-local version = io.popen("node -v"):read("*a")
+-- local version = io.popen("node -v"):read("*a")
+local version = ""
 version = version:sub(2, -1):gsub("\n", ""):gsub("\r", "")
 
 function Node.apply(Powerline)
@@ -29,7 +30,7 @@ function Node.apply(Powerline)
 	end
 
 	return {
-		fg = Powerline.Colors.white,
+		fg = Powerline.Colors.lightWhite,
 		bg = Powerline.Colors.green,
 		value = value
 	}

@@ -4,24 +4,46 @@ local LambdaSegment = require("powerline.segments.lambda")
 local NodeSegment = require("powerline.segments.node")
 local TextSegment = require("powerline.segments.text")
 local TimeSegment = require("powerline.segments.time")
+local EnvSegment = require("powerline.segments.env")
+local ECSegment = require("powerline.segments.exitcode")
 
 local Util = require("powerline.utils.util")
 
 local Powerline = {}
 
+-- Powerline.Colors = {
+-- 	black = 0, red = 1, green = 2, yellow = 3,
+-- 	blue = 4, magenta = 5, cyan = 6, white = 7,
+-- 	lightBlack = 60, lightRed = 61, lightGreen = 62,
+-- 	lightYellow = 63, lightBlue = 64, lightMagenta = 65,
+-- 	lightCyan = 66, lightWhite = 67,
+
+-- 	default = 9
+-- }
+
+-- Powerline.Symbols = {
+-- 	segment = "",
+-- 	segmentSoft = "",
+-- 	branch = ""
+-- }
+
 Powerline.Colors = {
 	black = 0, red = 1, green = 2, yellow = 3,
 	blue = 4, magenta = 5, cyan = 6, white = 7,
-	lightBlack = 60, lightRed = 61, lightGreen = 62,
-	lightYellow = 63, lightBlue = 64, lightMagenta = 65,
-	lightCyan = 66, lightWhite = 67,
-
-	default = 9
+	lightBlack = 8, lightRed = 9, lightGreen = 10,
+	lightYellow = 11, lightBlue = 12, lightMagenta = 13,
+	lightCyan = 14, lightWhite = 15,
+	lightGrey = 250, darkGrey = 240,
+	mediumOrange = 166, brightYellow = 220,
+	darkestCyan = 31,
+	default = 0
 }
 
 Powerline.Symbols = {
-	segment = "",
-	segmentSoft = "",
+	-- segment = "",
+	-- segmentSoft = "",
+	segment = "",
+	segmentSoft = "",
 	branch = ""
 }
 
@@ -31,7 +53,9 @@ Powerline.Segments = {
 	lambda = LambdaSegment,
 	node = NodeSegment,
 	time = TimeSegment,
-	textseg = TextSegment
+	textseg = TextSegment,
+	env = EnvSegment,
+	exitcode = ECSegment
 }
 
 function Powerline.init(powerlineArgs)
@@ -51,7 +75,8 @@ function Powerline.init(powerlineArgs)
 			local segmentGenerator = Powerline.Segments[segmentKey]
 
 			if segmentGenerator == nil then
-				prompt = prompt .. Powerline.updateSegment(previousSegment, nil) .. " " .. Util.clearStyle()
+				-- prompt = prompt .. Powerline.updateSegment(previousSegment, nil) .. " " .. Util.clearStyle()
+				prompt = prompt .. Powerline.updateSegment(previousSegment, nil) .. "" .. Util.clearStyle()
 				prompt = prompt .. segmentParsed.args
 				previousSegment = nil
 			else
@@ -75,14 +100,21 @@ function Powerline.init(powerlineArgs)
 					end
 				end
 
+				-- if segment ~= nil then
+				-- 	prompt = prompt .. Powerline.updateSegment(previousSegment, segment) .. " " .. segment.value .. " "
+				-- 	previousSegment = segment
+				-- end
 				if segment ~= nil then
-					prompt = prompt .. Powerline.updateSegment(previousSegment, segment) .. " " .. segment.value .. " "
-					previousSegment = segment
+					if segment.value ~= nil then
+						prompt = prompt .. Powerline.updateSegment(previousSegment, segment) .. "" .. segment.value .. ""
+						previousSegment = segment
+					end
 				end
 			end
 		end
 
-		clink.prompt.value = prompt
+		-- clink.prompt.value = prompt
+		clink.prompt.value = prompt .. " "
 	end
 
 	clink.prompt.register_filter(apply, 55)

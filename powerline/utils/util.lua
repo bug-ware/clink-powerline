@@ -1,5 +1,14 @@
 local Util = {ansi = "\x1b"}
 
+function Util.checkRoot()
+	local isRoot = io.popen("cmd /c net.exe session 1>nul 2>nul || echo false")
+	for line in isRoot:lines() do
+		isRoot:close()
+		return false
+	end
+	return true
+end
+
 function Util.pathname(path)
 	local prefix = ""
 	local i = path:find("[\\/][^\\/]*$")
@@ -49,11 +58,13 @@ function Util.applyStyle(style)
 	local styleCode = ""
 
 	if style.bg ~= nil then
-		styleCode = styleCode .. Util.ansi .. "[" .. (style.bg + 40) .. "m"
+		-- styleCode = styleCode .. Util.ansi .. "[" .. (style.bg + 40) .. "m"
+		styleCode = styleCode .. Util.ansi .. "[48;5;" .. style.bg .. "m"
 	end
 
 	if style.fg ~= nil then
-		styleCode = styleCode .. Util.ansi .. "[" .. (style.fg + 30) .. "m"
+		-- styleCode = styleCode .. Util.ansi .. "[" .. (style.fg + 30) .. "m"
+		styleCode = styleCode .. Util.ansi .. "[38;5;" .. style.fg .. "m"
 	end
 
 	return styleCode
@@ -69,7 +80,8 @@ function Util.splitPath(string)
 		table.insert(fields, " " .. token .. " ")
 	end
 
-	fields[1] = fields[1]:sub(1, -1)
+	fields[1] = fields[1]:sub(1, -1):upper()
+	-- fields[#fields-1] = fields[#fields-1]:sub(1, -2)
 	fields[#fields] = ""
 	return fields
 end

@@ -4,7 +4,7 @@ local Text = {}
 
 function Text.apply(Powerline, args)
 	return {
-		fg = Powerline.Colors.white,
+		fg = Powerline.Colors.lightWhite,
 		bg = Powerline.Colors.black,
 		value = args
 	}

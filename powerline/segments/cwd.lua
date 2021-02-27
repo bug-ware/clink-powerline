@@ -8,8 +8,14 @@ function Cwd.apply(Powerline)
 	end
 
 	return {
-		fg = Powerline.Colors.black,
-		bg = Powerline.Colors.blue,
+		-- fg = Powerline.Colors.black,
+		-- bg = Powerline.Colors.blue,
+		-- fg = Powerline.Colors.brightYellow,
+		-- bg = Powerline.Colors.mediumOrange,
+		-- fg = Powerline.Colors.lightWhite,
+		-- bg = Powerline.Colors.darkestCyan,
+		fg = Powerline.Colors.lightGrey,
+		bg = Powerline.Colors.darkGrey,
 		value = table.concat(pathList, Powerline.Symbols.segmentSoft)
 	}
 end
